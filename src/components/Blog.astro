@@ -1,4 +1,5 @@
 ---
+import type { Anime } from "../Types/typeMoe";
 const getAllProyects = async () => {
   const res = await fetch(
     "https://api.jikan.moe/v4/top/anime?filter=bypopularity"
@@ -7,9 +8,7 @@ const getAllProyects = async () => {
   return data.data;
 };
 
-const datos = getAllProyects().then((data) => {
-  console.log(data[0]);
-});
+const datos: Anime[] = await getAllProyects();
 ---
 
 <section class="bg-white">
@@ -23,7 +22,8 @@ const datos = getAllProyects().then((data) => {
           class="group relative flex flex-col overflow-hidden rounded-lg px-4 pb-4 pt-40 flex-grow"
         >
           <img
-            src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={datos[0].images.webp.large_image_url ||
+              datos[0].images.jpg.large_image_url}
             alt=""
             class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
           />
@@ -34,7 +34,7 @@ const datos = getAllProyects().then((data) => {
           <h3
             class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl"
           >
-            Wines
+            {datos[0].title_english || ""}
           </h3>
         </a>
       </div>
@@ -44,7 +44,8 @@ const datos = getAllProyects().then((data) => {
           class="group relative flex flex-col overflow-hidden rounded-lg px-4 pb-4 pt-40 mb-4"
         >
           <img
-            src="https://images.unsplash.com/photo-1504675099198-7023dd85f5a3?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={datos[1].images.webp.large_image_url ||
+              datos[1].images.jpg.large_image_url}
             alt=""
             class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
           />
@@ -55,7 +56,7 @@ const datos = getAllProyects().then((data) => {
           <h3
             class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl"
           >
-            Gin
+            {datos[1].title_english || ""}
           </h3>
         </a>
         <div class="grid gap-4 grid-cols-2 sm:grid-cols-2 lg:grid-cols-2">
@@ -64,7 +65,8 @@ const datos = getAllProyects().then((data) => {
             class="group relative flex flex-col overflow-hidden rounded-lg px-4 pb-4 pt-40"
           >
             <img
-              src="https://images.unsplash.com/photo-1571104508999-893933ded431?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={datos[3].images.webp.large_image_url ||
+                datos[3].images.jpg.large_image_url}
               alt=""
               class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
             />
@@ -75,7 +77,7 @@ const datos = getAllProyects().then((data) => {
             <h3
               class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl"
             >
-              Whiskey
+              {datos[3].title_english || datos[3].title_japanese}
             </h3>
           </a>
           <a
@@ -83,7 +85,8 @@ const datos = getAllProyects().then((data) => {
             class="group relative flex flex-col overflow-hidden rounded-lg px-4 pb-4 pt-40"
           >
             <img
-              src="https://images.unsplash.com/photo-1626897505254-e0f811aa9bf7?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={datos[5].images.webp.large_image_url ||
+                datos[5].images.jpg.large_image_url}
               alt=""
               class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
             />
@@ -94,7 +97,7 @@ const datos = getAllProyects().then((data) => {
             <h3
               class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl"
             >
-              Vodka
+              {datos[5].title_english || datos[5].title_japanese}
             </h3>
           </a>
         </div>
@@ -107,7 +110,8 @@ const datos = getAllProyects().then((data) => {
           class="group relative flex flex-col overflow-hidden rounded-lg px-4 pb-4 pt-40 flex-grow"
         >
           <img
-            src="https://images.unsplash.com/photo-1693680501357-a342180f1946?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={datos[7].images.webp.large_image_url ||
+              datos[7].images.jpg.large_image_url}
             alt=""
             class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
           />
@@ -118,7 +122,7 @@ const datos = getAllProyects().then((data) => {
           <h3
             class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl"
           >
-            Brandy
+            {datos[7].title_english || datos[7].title_japanese}
           </h3>
         </a>
       </div>
