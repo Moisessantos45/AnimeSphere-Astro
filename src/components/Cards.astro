@@ -8,8 +8,8 @@ interface Props {
 
 const { mal_id } = Astro.props;
 
-const cardsData: Anime[] = [];
-const nameGenres: TypeGneres[] = [];
+let cardsData: Anime[] = [];
+let nameGenres: TypeGneres[] = [];
 
 try {
   const [animes, generes] = await Promise.all([
@@ -18,14 +18,14 @@ try {
   ]);
   const resp: Anime[] = animes;
   // const resp: Anime[] = await getAllGneres(Number(mal_id)).then((res) => res);
-  cardsData.push(...resp);
 
   const getGneresById: TypeGneres[] = generes;
   // const getGneresById: TypeGneres[] = await getAllGenres().then((res) => res);
   const filterGenres: TypeGneres[] = getGneresById.filter(
     (item) => item.mal_id === Number(mal_id)
   );
-  nameGenres.push(...filterGenres);
+  cardsData = resp;
+  nameGenres = filterGenres;
 } catch (error) {
   cardsData.push(...[]);
 }
@@ -34,7 +34,7 @@ try {
 <main class="w-[97%] p-2 gap-3 flex flex-col m-auto items-center">
   <div class="w-full flex items-center gap-2 p-2 border_color_left">
     {
-      nameGenres.length > 1 && (
+      nameGenres.length > 0 && (
         <h1 class="text-white font-bold text-2xl capitalize">
           {nameGenres[0].name || ""}
         </h1>

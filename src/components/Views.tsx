@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../Css/aside.css";
 import axios from "axios";
-import type { Anime } from "../Types/type";
+import type { Anime } from "../Types/typeMoe";
 
 const Views = () => {
   const [cardsData, setCardsData] = useState<Anime[]>([]);
@@ -10,22 +10,20 @@ const Views = () => {
   useEffect(() => {
     const getAllAnimes = async () => {
       try {
-        const response = await axios(
-          "https://api.anime-dex.workers.dev/upcoming/1"
-        );
-        const data = response.data ? response.data.results : [];
-
-        const newDataOmitMedia: Anime[] = data.map(
-          ({
-            airingAt,
-            episode,
-            media,
-          }: {
-            airingAt: number;
-            episode: number;
-            media: any;
-          }) => ({ airingAt, episode, ...media })
-        );
+        const response = await axios("https://api.jikan.moe/v4/top/anime");
+        const data = response.data ? response.data.data : [];
+        const newDataOmitMedia: Anime[] = data;
+        // const newDataOmitMedia: Anime[] = data.map(
+        //   ({
+        //     airingAt,
+        //     episode,
+        //     media,
+        //   }: {
+        //     airingAt: number;
+        //     episode: number;
+        //     media: any;
+        //   }) => ({ airingAt, episode, ...media })
+        // );
 
         const newData = newDataOmitMedia.slice(0, 5);
         setCardsData(newData);
@@ -48,17 +46,20 @@ const Views = () => {
           cardsData.map((card) => (
             <figure
               className="relative flex justify-center items-center w-full p-1 card_item rounded-md"
-              key={card.id}
+              key={card.mal_id}
             >
               <span className="absolute top-2 left-2 card_text_epi text-sm rounded-md min-w-14 flex justify-center items-center z-10">
-                {card.episode || "?"}
+                {card.episodes || "?"}
               </span>
               <span className="absolute top-2 right-3 flex justify-center items-center text-white rounded-md text-sm min-w-14 bg_tangs_image z-10">
-                {card.averageScore || "?"}
+                {card.popularity || "?"}
               </span>
               <img
-                src={card.coverImage.extraLarge}
-                alt={card.title.romaji}
+                src={
+                  card.images.webp.large_image_url ||
+                  card.images.jpg.large_image_url
+                }
+                alt={card.title_english || card.title_japanese || card.title}
                 className="w-full flex h-52 self-center rounded-lg text-white"
               />
               <span className=" absolute bottom-2 left-2 z-10 font-bold">
