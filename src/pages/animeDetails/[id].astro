@@ -1,0 +1,154 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Reviews from "../../components/Reviews.astro";
+import type { Anime } from "../../Types/typeMoe";
+import axios from "axios";
+
+const { id } = Astro.params;
+
+const views = Math.floor(Math.random() * (10000 - 100 + 1)) + 100;
+
+let dataAnime: Anime;
+
+try {
+  const resp = await axios(`https://api.jikan.moe/v4/anime/${id}`);
+  const data: Anime = resp.data?.data || {};
+  dataAnime = data;
+} catch (error) {
+  dataAnime = {} as Anime;
+}
+
+export async function getStaticPaths() {
+  const getAllAnimes = async () => {
+    try {
+      const resp = await axios(
+        "https://api.jikan.moe/v4/anime?start_date=2024-01-01"
+      );
+      const data = resp.data?.data || [];
+      return data;
+    } catch (error) {
+      return [];
+    }
+  };
+
+  const pagesAnime: Anime[] = await getAllAnimes();
+  return pagesAnime.map((item) => ({
+    params: { id: item.mal_id },
+  }));
+}
+---
+
+<Layout title="Anime details">
+  <section class="w-12/12 flex m-auto mt-10 flex-wrap gap-3">
+    <figure class="mg:w-3/12 w-full flex justify-center items-center p-2">
+      <img
+        src={dataAnime.images.jpg
+          ? dataAnime.images.jpg.image_url || dataAnime.images.webp.image_url
+          : ""}
+        alt={dataAnime.title_english ||
+          dataAnime.title ||
+          dataAnime.title_english}
+        class="w-full rounded-lg h-full"
+      />
+    </figure>
+    <article class="mg:w-[70%] w-full flex flex-wrap gap-3 p-2">
+      <div class="w-full flex justify-between flex-wrap p-2 gap-3">
+        <div class="flex flex-col gap-2">
+          <h3 class="text-white font-bold text-3xl">
+            {
+              dataAnime.title_english ||
+                dataAnime.title ||
+                dataAnime.title_english
+            }
+          </h3>
+          <span class="text-slate-300"
+            >{dataAnime.title_japanese || dataAnime.title}</span
+          >
+        </div>
+        <div class="flex justify-evenly gap-2 flex-col">
+          <div class="text-yellow-400">
+            <i class="fa fa-star text-xl"></i>
+            <i class="fa fa-star text-xl"></i>
+            <i class="fa fa-star text-xl"></i>
+            <i class="fa fa-star text-xl"></i>
+            <i class="fa fa-star-half-o text-xl"></i>
+          </div>
+          <span class="text-slate-300">{dataAnime.favorites} Votes</span>
+        </div>
+      </div>
+      <p class="text-slate-300">
+        {
+          dataAnime.synopsis
+            ? dataAnime.synopsis.substring(0, 270)
+            : "No description"
+        }
+      </p>
+      <div class="w-full flex justify-evenly p-2 flex-wrap gap-4">
+        <div class="w-full lg:w-5/12">
+          <ul class="flex justify-between gap-2 flex-col">
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Type:</span> TV Series
+            </li>
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Studios:</span> Lerche
+            </li>
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Date aired:</span>
+              {dataAnime.aired.from || ""}
+            </li>
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Status:</span>
+              {dataAnime.status || ""}
+            </li>
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Genre:</span>
+              {dataAnime.genres?.join(", ") || ""}
+            </li>
+          </ul>
+        </div>
+        <div class="w-full lg:w-5/12">
+          <ul class="flex justify-between gap-2 flex-col">
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Scores:</span>
+              {dataAnime.score || dataAnime.scored_by || ""}
+            </li>
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Rating:</span>
+              {dataAnime.rating || ""}
+            </li>
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Duration:</span>
+              {dataAnime.duration || ""}
+            </li>
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Quality:</span> HD
+            </li>
+            <li class="text-slate-200 font-bold list-disc">
+              <span class="text-slate-300 font-normal">Views:</span>
+              {dataAnime.popularity || views || ""}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="w-full flex items-center gap-3">
+        <span class="bg_slate p-4 rounded-lg text-white font-bold"
+          ><i class="fa fa-heart-o text-white"></i> Follow</span
+        >
+        <a href="/Watching" class=""
+          ><span class="text-white bg_slate font-bold p-4 rounded-l-lg"
+            >Watch Now</span
+          >
+          <i class="fa fa-angle-right bg_slate text-white p-[18px] rounded-r-lg"
+          ></i></a
+        >
+      </div>
+    </article>
+  </section>
+  <Reviews id="1" />
+</Layout>
+
+<style>
+  .bg_slate {
+    background: #dd0f62;
+  }
+</style>

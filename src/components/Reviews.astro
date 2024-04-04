@@ -1,0 +1,87 @@
+---
+import Aside from "./Aside.astro";
+import YourComment from "./YourComment";
+import type { AnimeReview } from "../Types/typeReviews";
+import axios from "axios";
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+
+const getAllReviews = async (id: number) => {
+  try {
+    const res = await axios(`https://api.jikan.moe/v4/anime/${id}/reviews`);
+    return res.data.data;
+  } catch (error) {
+    throw new Error("Error al obtener los datos");
+  }
+};
+
+const reviews: AnimeReview[] = [];
+
+try {
+  const datos: AnimeReview[] = await getAllReviews(Number(id));
+  const newFilterReviews = datos.filter((review) => review.review.length > 30);
+  reviews.push(...newFilterReviews);
+} catch (error) {
+  reviews.push(...[]);
+}
+---
+
+<section
+  class="grid container_watching_reviews m-auto justify-items-center sm:p-4 p-2"
+>
+  <div class="w-full flex items-center gap-2 p-2 border_color_left ml-10">
+    <h1 class="text-white font-bold text-2xl capitalize">REVIEWS</h1>
+  </div>
+  <div class="w-12/12 flex flex-col gap-4 col-start-1 md:p-0 p-3 listaItem">
+    {
+      reviews.map((review) => (
+        <article class="w-full relative text-white flex gap-5 justify-end">
+          <figure class="absolute top-1 left-2 z-20">
+            <img
+              src={
+                review.user.images.jpg.image_url ||
+                review.user.images.webp.image_url
+              }
+              alt={review.user.username || "avatar"}
+              class="rounded-full mg:h-14 h-10 mg:w-14 w-10 img_avatar"
+            />
+          </figure>
+          <div class="reviews rounded-lg md:w-[88%] w-10/12 p-3 flex flex-wrap gap-3">
+            <h1 class="flex justify-center items-center text-lg font-bold">
+              {review.user.username || "Anonimo"}
+              <span class="text-slate-300 text-sm">
+                - {review.date.split("T").shift()}
+              </span>
+            </h1>
+
+            <p class="text-slate-300">{review.review.substring(0, 300)}</p>
+          </div>
+        </article>
+      ))
+    }
+    <YourComment />
+  </div>
+  <Aside title="reviews" />
+</section>
+
+<style>
+  .container_watching_reviews {
+    grid-template-columns: 70% 1fr;
+    grid-auto-flow: row;
+    grid-auto-rows: auto;
+  }
+
+  .reviews {
+    background: #1d1e39;
+  }
+
+  @media (max-width: 768px) {
+    .container_watching_reviews {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

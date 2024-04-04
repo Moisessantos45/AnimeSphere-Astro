@@ -1,0 +1,16 @@
+---
+import Views from "./Views";
+import Comment from "./Comment";
+
+interface Props {
+  title: string;
+}
+const { title }: Props = Astro.props;
+---
+
+<aside
+  class={`lg:w-full w-full sm:p-2 p-4 text-white gap-4 flex md:items-center flex-col ${title !== "home" ? " sm:w-7/12 md:w-full" : " md:w-5/12 sm:w-6/12"}`}
+>
+  <Views client:load />
+  {title === "home" && <Comment client:load />}
+</aside>

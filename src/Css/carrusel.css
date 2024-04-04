@@ -1,0 +1,35 @@
+.bg_btn_navigation {
+  background: #070720;
+  transform: rotate(45deg);
+}
+
+.bg_btn_navigation::after {
+  content: "";
+  background: rgba(255, 255, 255, 10%);
+  transform: rotate(89deg);
+  width: 55px;
+  height: 55px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: -1;
+  border-radius: 6px;
+}
+
+.btn_navigation {
+  background: rgba(255 255 255, 10%);
+}
+
+.slider_container::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to bottom, transparent, rgb(0, 0, 0));
+  content: "";
+}
+
+.bg_slate {
+  background: #dd0f62;
+}

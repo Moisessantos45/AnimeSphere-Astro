@@ -1,0 +1,151 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Reviews from "../components/Reviews.astro";
+---
+
+<Layout title="Watching">
+  <section
+    class="w-12/12 m-auto flex items-center flex-wrap justify-items-center md:mt-20 mt-10 p-2"
+  >
+    <div
+      class="relative border shadow-2xl shadow-black rounded-md md:w-12/12 w-full m-auto h-[400px] drop-shadow-sm group flex justify-center"
+    >
+      <video class="w-full h-full object-cover rounded-md" controls>
+        <source src="#" type="video/mp4" />
+      </video>
+    </div>
+
+    <div class="flex w-full p-4 gap-3 flex-col">
+      <span class="border_color_left p-3"
+        ><h1 class="text-white text-lg font-bold">LIST NAME</h1></span
+      >
+      <ol class="w-full p-2 gap-5 justify-evenly flex-wrap container_watching">
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 01
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 02
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 03
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 04
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 05
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 06
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 07
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 08
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 09
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 10
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 11
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 12
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 13
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 15
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 16
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 17
+        </li>
+        <li
+          class="item_list_items text-white text-base p-2 rounded-md flex justify-center items-center"
+        >
+          Ep 18
+        </li>
+      </ol>
+    </div>
+  </section>
+  <Reviews />
+</Layout>
+
+<style>
+  .item_list_items {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .item_list_items:hover {
+    background: rgb(255, 255, 255);
+    color: black;
+  }
+
+  .container_watching {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+
+    grid-auto-rows: auto; /* Altura automática para las filas */
+    grid-auto-flow: dense; /* Las imágenes llenarán los espacios vacíos */
+  }
+
+  .border_color_left {
+    border-left: 4px solid #dd0f62;
+  }
+
+  .container_watching_reviews {
+    grid-template-columns: 70% 1fr;
+    grid-auto-flow: row;
+    grid-auto-rows: auto;
+  }
+
+  .reviews {
+    background: #1d1e39;
+  }
+
+  @media (max-width: 768px) {
+    .container_watching_reviews {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+import type { Anime, TypeGneres } from "../Types/typeMoe";
+import { getAllGenres, getAllAnimesGenres } from "../Utils/getFetch";
+
+interface Props {
+  mal_id: string;
+}
+
+const { mal_id } = Astro.props;
+
+const cardsData: Anime[] = [];
+const nameGenres: TypeGneres[] = [];
+
+try {
+  const [animes, generes] = await Promise.all([
+    getAllAnimesGenres(Number(mal_id)),
+    getAllGenres(),
+  ]);
+  const resp: Anime[] = animes;
+  // const resp: Anime[] = await getAllGneres(Number(mal_id)).then((res) => res);
+  cardsData.push(...resp);
+
+  const getGneresById: TypeGneres[] = generes;
+  // const getGneresById: TypeGneres[] = await getAllGenres().then((res) => res);
+  const filterGenres: TypeGneres[] = getGneresById.filter(
+    (item) => item.mal_id === Number(mal_id)
+  );
+  nameGenres.push(...filterGenres);
+} catch (error) {
+  cardsData.push(...[]);
+}
+---
+
+<main class="w-[97%] p-2 gap-3 flex flex-col m-auto items-center">
+  <div class="w-full flex items-center gap-2 p-2 border_color_left">
+    {
+      nameGenres.length > 1 && (
+        <h1 class="text-white font-bold text-2xl capitalize">
+          {nameGenres[0].name || ""}
+        </h1>
+      )
+    }
+  </div>
+  {
+    cardsData.length === 0 ? (
+      <h1 class="text-white text-2xl">No hay datos</h1>
+    ) : (
+      <ul class="w-full cards-container gap-3 text-white">
+        {cardsData.map((item) => (
+          <li class="flex justify-start items-center flex-col gap-5">
+            <figure class="relative top-1 flex justify-center items-center">
+              <span class="absolute top-2 left-2 card_text_epi text-sm rounded-md min-w-14 flex justify-center items-center">
+                {item.episodes || "?"}
+              </span>
+              <img
+                src={
+                  item.images?.jpg
+                    ? item.images.jpg.image_url
+                    : item.images.webp.image_url
+                }
+                alt={item.title_english}
+                class="max-w-[98%] rounded-lg min-h-[350px] max-h-[351px]"
+              />
+              <span class="absolute bottom-2 left-7 flex justify-center items-center text-white p-2 rounded-md h-7 min-w-14 text-sm bg_tangs_image">
+                {item.members || "?"}
+              </span>
+              <span class="absolute bottom-2 right-7 flex justify-center items-center text-white p-1 rounded-md h-7 min-w-14 text-sm bg_tangs_image">
+                {item.favorites || "?"}
+              </span>
+            </figure>
+            <footer class="w-12/12 flex flex-col gap-4">
+              <article class="flex justify-evenly flex-wrap gap-2">
+                {item.genres.map((genre) => (
+                  <span class="bg_tangs_card rounded-md flex justify-center items-center text-xs p-1">
+                    {genre.name}
+                  </span>
+                ))}
+              </article>
+              <a href={`/animeDetails/${item.mal_id}`}>
+                <h1 class="card_text_title text-lg font-bold p-2 cursor-pointer">
+                  {item.title || item.title_english || item.title_japanese}
+                </h1>
+              </a>
+            </footer>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</main>
+
+<style>
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 10px;
+  }
+
+  .border_color_left {
+    border-left: 4px solid #dd0f62;
+  }
+
+  .card_text_epi {
+    background: #dd0f62;
+  }
+
+  .bg_tangs_image {
+    background: #3d3d3d;
+  }
+
+  .bg_tangs_card {
+    background: rgb(255, 255, 255, 20%);
+  }
+
+  .card_text_title:hover {
+    color: #dd0f62;
+    transition: 0.5s;
+  }
+</style>
